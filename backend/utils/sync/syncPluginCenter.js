@@ -51,6 +51,17 @@ async function syncPluginCenter() {
 
     let message = [];
 
+    // 先删除，再新增，再更新, 避免同一个插件被删除和新增的情况
+    // 删除插件
+    if (removed.length > 0) {
+      const deleteConditions = removed.map((item) => ({
+        name: item.name,
+        author: item.author,
+      }));
+      await pluginCenterModel.deleteMany({ $or: deleteConditions });
+      message.push(`移除插件：${removed.length}个`);
+    }
+
     // 处理新增插件并设置new为true
     if (added.length > 0) {
       // 将所有现有记录的new设为false
@@ -71,16 +82,6 @@ async function syncPluginCenter() {
       }));
       await pluginCenterModel.bulkWrite(bulkUpdates);
       message.push(`更新密码：${changed.length}个`);
-    }
-
-    // 删除插件
-    if (removed.length > 0) {
-      const deleteConditions = removed.map((item) => ({
-        name: item.name,
-        author: item.author,
-      }));
-      await pluginCenterModel.deleteMany({ $or: deleteConditions });
-      message.push(`移除插件：${removed.length}个`);
     }
 
     return message.length > 0
