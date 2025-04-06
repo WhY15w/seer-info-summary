@@ -15,11 +15,24 @@
         赛尔号信息聚合页
       </h1>
       <div
-        class="mr-10 mb-4 flex cursor-pointer items-center justify-end text-white/60 hover:text-white/80"
-        @click="goToSrc"
+        class="mr-10 mb-4 flex items-center justify-end text-white/60 hover:text-white/80"
       >
-        <LinkIcon class="mr-1 inline-block h-4 w-4"></LinkIcon>
-        <span>开源地址</span>
+        <Popover>
+          <PopoverTrigger class="cursor-pointer">
+            <LinkIcon class="mr-1 inline-block h-4 w-4"></LinkIcon>
+            <span>开源地址</span>
+          </PopoverTrigger>
+          <PopoverContent class="flex w-fit gap-3 border-0">
+            <Gitee
+              class="cursor-pointer"
+              @click="goToSrc('gitee')"
+            />
+            <Github
+              class="cursor-pointer"
+              @click="goToSrc('github')"
+            />
+          </PopoverContent>
+        </Popover>
       </div>
 
       <!-- 导航卡片 -->
@@ -63,7 +76,14 @@
 import router from '@/router'
 import { LinkIcon } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { toast, Toaster } from 'vue-sonner'
+import { Toaster } from 'vue-sonner'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import Gitee from '@/components/public/icon/gitee.vue'
+import Github from '@/components/public/icon/github.vue'
 
 const navItems = ref([
   {
@@ -88,9 +108,11 @@ const navItems = ref([
   },
 ])
 
-const goToSrc = () => {
-  // toast.warning('项目尚未完成, 完成后将开源')
-  window.open('https://gitee.com/yuyuqaq/seer-info-summary')
+const goToSrc = (type) => {
+  if (type === 'github')
+    window.open('https://github.com/WhY15w/seer-info-summary')
+  if (type === 'gitee')
+    window.open('https://gitee.com/yuyuqaq/seer-info-summary')
 }
 </script>
 
