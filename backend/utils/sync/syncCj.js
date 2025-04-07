@@ -48,14 +48,8 @@ async function syncCj() {
       (item) => !originalDataMap.has(createFingerprint(item))
     );
 
-    // 执行数据库操作（关键改动在这里）
+    // 执行数据库操作
     let message = [];
-
-    // 批量插入原始完整数据
-    if (added.length > 0) {
-      await cjModel.insertMany(added); // 直接插入原始数据
-      message.push(`重聚新增：${added.length}个`);
-    }
 
     // 删除逻辑
     if (removed.length > 0) {
@@ -65,6 +59,12 @@ async function syncCj() {
       }));
       await cjModel.deleteMany({ $or: deleteConditions });
       message.push(`重聚移除：${removed.length}个`);
+    }
+
+    // 批量插入原始完整数据
+    if (added.length > 0) {
+      await cjModel.insertMany(added); // 直接插入原始数据
+      message.push(`重聚新增：${added.length}个`);
     }
 
     return message.length > 0

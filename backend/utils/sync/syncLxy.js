@@ -51,12 +51,6 @@ async function syncLxy() {
     // 执行数据库操作
     let message = [];
 
-    // 批量插入原始完整数据
-    if (added.length > 0) {
-      await lxyModel.insertMany(added); // 直接插入原始数据
-      message.push(`雷小伊新增：${added.length}个`);
-    }
-
     // 删除逻辑
     if (removed.length > 0) {
       const deleteConditions = removed.map((item) => ({
@@ -65,6 +59,12 @@ async function syncLxy() {
       }));
       await lxyModel.deleteMany({ $or: deleteConditions });
       message.push(`雷小伊移除：${removed.length}个`);
+    }
+
+    // 批量插入原始完整数据
+    if (added.length > 0) {
+      await lxyModel.insertMany(added); // 直接插入原始数据
+      message.push(`雷小伊新增：${added.length}个`);
     }
 
     return message.length > 0
