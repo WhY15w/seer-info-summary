@@ -10,7 +10,7 @@
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "ejs": "~3.1.10",
     "express": "~5.1.0",
     "http-errors": "~1.6.3",
