@@ -1,82 +1,76 @@
 <template>
-  <div
-    class="min-h-screen bg-gradient-to-b from-blue-900 via-indigo-800 to-purple-900"
-  >
-    <Toaster
-      richColors
-      position="top-right"
-      class="opacity-90"
-    />
-    <div class="mx-auto max-w-3xl px-4 pt-8">
-      <!-- 标题 -->
-      <h1
-        class="animate-gradient mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-center text-5xl font-extrabold text-transparent"
-      >
-        赛尔号信息聚合页
-      </h1>
-      <div
-        class="mr-10 mb-4 flex items-center justify-end text-white/60 hover:text-white/80"
-      >
-        <Popover>
-          <PopoverTrigger class="cursor-pointer">
-            <LinkIcon class="mr-1 inline-block h-4 w-4"></LinkIcon>
-            <span>开源地址</span>
-          </PopoverTrigger>
-          <PopoverContent class="flex w-fit gap-3 border-0">
-            <Gitee
-              class="cursor-pointer"
-              @click="goToSrc('gitee')"
-            />
-            <Github
-              class="cursor-pointer"
-              @click="goToSrc('github')"
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-
-      <!-- 导航卡片 -->
-      <div class="space-y-6">
-        <div
-          v-for="item in navItems"
-          :key="item.path"
-          class="group relative transform cursor-pointer rounded-3xl bg-white/10 p-5 backdrop-blur-lg transition-all duration-300 hover:-translate-y-1 hover:bg-white/20 hover:shadow-2xl hover:shadow-indigo-500/30"
-          @click="router.push(item.path)"
+  <MainTemplate>
+    <template #main>
+      <div class="mx-auto max-w-3xl px-4 pt-8">
+        <!-- 标题 -->
+        <h1
+          class="animate-gradient mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-center text-5xl font-extrabold text-transparent"
         >
-          <!-- 渐变边框 -->
+          赛尔号信息聚合页
+        </h1>
+        <div
+          class="mr-10 mb-4 flex items-center justify-end gap-4 text-white/60"
+        >
+          <Popover>
+            <PopoverTrigger
+              class="flex cursor-pointer items-center hover:text-white/80"
+            >
+              <LinkIcon class="mr-1 inline-block h-4 w-4"></LinkIcon>
+              <span>开源地址</span>
+            </PopoverTrigger>
+            <PopoverContent class="flex w-fit gap-3 border-0">
+              <Gitee
+                class="cursor-pointer"
+                @click="goToSrc('gitee')"
+              />
+              <Github
+                class="cursor-pointer"
+                @click="goToSrc('github')"
+              />
+            </PopoverContent>
+          </Popover>
           <div
-            class="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500/30 to-cyan-400/30 opacity-0 transition-opacity group-hover:opacity-100"
-          ></div>
+            class="flex cursor-pointer items-center gap-1 hover:text-white/80"
+            @click="router.push('/user/center')"
+          >
+            <MailCheckIcon class="h-4 w-4"></MailCheckIcon>
+            <span>订阅</span>
+          </div>
+        </div>
 
-          <!-- 内容 -->
-          <div class="relative z-10 text-center">
-            <h3 class="mb-2 text-2xl font-semibold text-white">
-              {{ item.title }}
-            </h3>
-            <p class="text-sm text-indigo-200 opacity-80">
-              {{ item.desc }}
-            </p>
+        <!-- 导航卡片 -->
+        <div class="space-y-6">
+          <div
+            v-for="item in navItems"
+            :key="item.path"
+            class="group relative transform cursor-pointer rounded-3xl bg-white/10 p-5 backdrop-blur-lg transition-all duration-300 hover:-translate-y-1 hover:bg-white/20 hover:shadow-2xl hover:shadow-indigo-500/30"
+            @click="router.push(item.path)"
+          >
+            <!-- 渐变边框 -->
+            <div
+              class="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500/30 to-cyan-400/30 opacity-0 transition-opacity group-hover:opacity-100"
+            ></div>
+
+            <!-- 内容 -->
+            <div class="relative z-10 text-center">
+              <h3 class="mb-2 text-2xl font-semibold text-white">
+                {{ item.title }}
+              </h3>
+              <p class="text-sm text-indigo-200 opacity-80">
+                {{ item.desc }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <footer class="mt-8 pb-8 text-center">
-      <div class="mx-auto max-w-3xl px-4">
-        <p
-          class="text-sm text-white/60 italic transition-colors hover:text-white/80"
-        >
-          © 2025 𝓗𝓾𝓻𝓻𝔂𝓦𝓪𝓷𝓰 · Made with ❤️ by 聿聿
-        </p>
-      </div>
-    </footer>
-  </div>
+    </template>
+  </MainTemplate>
 </template>
 
 <script setup>
 import router from '@/router'
-import { LinkIcon } from 'lucide-vue-next'
+import { LinkIcon, MailCheckIcon } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { Toaster } from 'vue-sonner'
 import {
   Popover,
   PopoverContent,
@@ -84,6 +78,7 @@ import {
 } from '@/components/ui/popover'
 import Gitee from '@/components/public/icon/gitee.vue'
 import Github from '@/components/public/icon/github.vue'
+import MainTemplate from '@/components/public/MainTemplate.vue'
 
 const navItems = ref([
   {

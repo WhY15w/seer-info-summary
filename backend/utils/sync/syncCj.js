@@ -69,7 +69,7 @@ async function syncCj() {
 
     return message.length > 0
       ? `【重聚系列已同步】\n${message.join("\n")}`
-      : "重聚系列已是最新版本";
+      : "";
   } catch (error) {
     console.error("同步失败:", error);
     throw new Error("重聚同步失败");

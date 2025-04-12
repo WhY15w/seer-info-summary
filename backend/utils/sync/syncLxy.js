@@ -69,7 +69,7 @@ async function syncLxy() {
 
     return message.length > 0
       ? `【雷小伊系列已同步】\n${message.join("\n")}`
-      : "雷小伊系列已是最新版本";
+      : "";
   } catch (error) {
     console.error("同步失败:", error);
     throw new Error("雷小伊同步失败");

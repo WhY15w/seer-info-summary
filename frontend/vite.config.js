@@ -18,6 +18,11 @@ export default defineConfig({
       deleteOriginFile: false, // 源文件压缩后是否删除
     }),
   ],
+  server: {
+    // 端口号
+    port: 5222,
+    open: false,
+  },
   base: process.env.NODE_ENV === 'production' ? '/seerinfo/' : '/',
   resolve: {
     alias: {

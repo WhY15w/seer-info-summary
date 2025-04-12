@@ -30,6 +30,28 @@ const router = createRouter({
       name: 'bilibili',
       component: () => import('../views/Details/Bilibili.vue'),
     },
+    // 登录 注册 找回
+    {
+      path: '/auth/login',
+      name: 'login',
+      component: () => import('../views/Auth/Login.vue'),
+    },
+    {
+      path: '/auth/register',
+      name: 'register',
+      component: () => import('../views/Auth/Register.vue'),
+    },
+    {
+      path: '/auth/recover',
+      name: 'recover',
+      component: () => import('../views/Auth/Recover.vue'),
+    },
+    // 用户中心
+    {
+      path: '/user/center',
+      name: 'center',
+      component: () => import('../views/User/Center.vue'),
+    },
     // 匹配所有其他路径, 404NotFound页面
     {
       path: '/:pathMatch(.*)*',

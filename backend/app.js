@@ -11,6 +11,10 @@ const loggerRouter = require("./routes/logger");
 const pluginCenterRouter = require("./routes/pluginCenter");
 const bilibiliRouter = require("./routes/bilibili");
 const serverRouter = require("./routes/server");
+const emailRouter = require("./routes/email");
+const captchaRouter = require("./routes/captcha");
+const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
 
 require("./jobs/index"); // 导入定时任务
 
@@ -32,6 +36,10 @@ apiRouter.use("/", loggerRouter);
 apiRouter.use("/", pluginCenterRouter);
 apiRouter.use("/", bilibiliRouter);
 apiRouter.use("/", serverRouter);
+apiRouter.use("/email", emailRouter);
+apiRouter.use("/captcha", captchaRouter);
+apiRouter.use("/auth", authRouter);
+apiRouter.use("/user", userRouter);
 
 // 统一添加前缀
 app.use("/seer-api", apiRouter);

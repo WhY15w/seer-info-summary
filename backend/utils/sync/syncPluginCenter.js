@@ -86,7 +86,7 @@ async function syncPluginCenter() {
 
     return message.length > 0
       ? `【插件中心已同步】\n${message.join("\n")}`
-      : "插件数据已是最新版本";
+      : "";
   } catch (error) {
     console.error("同步失败:", error);
     throw new Error("插件中心同步失败");
