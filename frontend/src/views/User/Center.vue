@@ -36,7 +36,7 @@
               <img
                 :src="userInfo.avatar"
                 alt="用户头像"
-                class="relative h-24 w-24 rounded-full border-4 border-white object-cover transition-all duration-300 hover:scale-105"
+                class="relative h-24 w-24 rounded-full border-2 border-white object-cover transition-all duration-300 hover:scale-105"
                 @error="handleAvatarError"
               />
             </div>
@@ -53,12 +53,14 @@
                     @click="router.push('/')"
                     class="cursor-pointer"
                   >
+                    <ArrowLeftIcon></ArrowLeftIcon>
                     返回
                   </Button>
                   <Button
                     @click="logOut"
                     class="cursor-pointer"
                   >
+                    <LogOutIcon></LogOutIcon>
                     退出
                   </Button>
                 </span>
@@ -76,18 +78,22 @@
             <!-- 基础信息 -->
             <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div class="space-y-1">
-                <label class="text-sm font-medium text-gray-400">
-                  <span class="mr-0.5">📧</span>
-                  电子邮箱
+                <label
+                  class="flex items-center gap-1.5 text-sm font-medium text-gray-500"
+                >
+                  <MailIcon class="h-4 w-4"></MailIcon>
+                  <span> 电子邮箱 </span>
                 </label>
                 <p class="text-lg font-semibold break-all text-gray-800">
                   {{ userInfo.email }}
                 </p>
               </div>
               <div class="space-y-1">
-                <label class="text-sm font-medium text-gray-400">
-                  <span class="mr-0.5">📅</span>
-                  注册时间
+                <label
+                  class="flex items-center gap-1.5 text-sm font-medium text-gray-500"
+                >
+                  <CalendarCheck2Icon class="h-4 w-4"></CalendarCheck2Icon>
+                  <span>注册时间</span>
                 </label>
                 <p class="text-lg text-gray-700">
                   {{ formatDate(userInfo.createdAt) }}
@@ -97,7 +103,12 @@
 
             <!-- 订阅设置 -->
             <div class="space-y-2">
-              <label class="text-sm font-medium text-gray-400">订阅设置</label>
+              <label
+                class="mb-2 flex items-center gap-x-1.5 text-sm font-medium text-gray-500"
+              >
+                <SettingsIcon class="h-4 w-4"></SettingsIcon>
+                <span>订阅设置</span>
+              </label>
               <form
                 @submit="onSubmit"
                 class="space-y-4"
@@ -147,6 +158,7 @@
                     class="w-full cursor-pointer md:w-auto"
                     :loading="isSaving"
                   >
+                    <SaveIcon></SaveIcon>
                     {{ isSaving ? '保存中...' : '保存订阅设置' }}
                   </Button>
                 </div>
@@ -154,9 +166,18 @@
             </div>
 
             <!-- 最后登录时间 -->
-            <div class="border-t border-dashed border-gray-200 pt-5">
-              <p class="text-right text-sm text-gray-400">
-                ⏱️ 最后登录时间：{{ formatDate(userInfo.lastLogin) }}
+            <div
+              class="mx-3 flex items-center justify-between border-t border-gray-400 pt-4"
+            >
+              <p class="flex items-center text-sm text-gray-500">
+                <IdCardIcon class="mr-1.5 h-5 w-5"></IdCardIcon>
+                <span>ID：{{ userInfo._id }}</span>
+              </p>
+              <p class="flex items-center text-sm text-gray-500">
+                <LogInIcon class="mr-1.5 h-5 w-5"></LogInIcon>
+                <span>
+                  最后登录时间：{{ formatDate(userInfo.lastLogin) }}
+                </span>
               </p>
             </div>
           </div>
@@ -187,6 +208,16 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
+import {
+  SettingsIcon,
+  MailIcon,
+  CalendarCheck2Icon,
+  IdCardIcon,
+  LogInIcon,
+  LogOutIcon,
+  ArrowLeftIcon,
+  SaveIcon,
+} from 'lucide-vue-next'
 
 const token = ref(localStorage.getItem('token'))
 const userInfo = ref({
