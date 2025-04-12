@@ -13,7 +13,7 @@
     "dotenv": "^16.5.0",
     "ejs": "~3.1.10",
     "express": "~5.1.0",
-    "http-errors": "~1.6.3",
+    "http-errors": "~2.0.0",
     "jsonwebtoken": "^9.0.2",
     "md5": "^2.3.0",
     "mongoose": "^8.13.2",
