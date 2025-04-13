@@ -6,6 +6,7 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const { reply } = require("./res/reply");
+const config = require("./config/config");
 
 const loggerRouter = require("./routes/logger");
 const pluginCenterRouter = require("./routes/pluginCenter");
@@ -27,7 +28,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use("/seer-api", express.static(path.join(__dirname, "public")));
+app.use(config.prefix, express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 // 注册路由
@@ -42,7 +43,7 @@ apiRouter.use("/auth", authRouter);
 apiRouter.use("/user", userRouter);
 
 // 统一添加前缀
-app.use("/seer-api", apiRouter);
+app.use(config.prefix, apiRouter);
 
 // 捕获404并转发到错误处理
 app.use(function (req, res, next) {

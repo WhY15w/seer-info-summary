@@ -75,7 +75,7 @@
                       type="button"
                       @click="sendEmailCaptcha"
                       class="bg-gradient-to-r from-blue-500 to-purple-500"
-                      :disabled="isSending"
+                      :disabled="isSending || isLoading"
                     >
                       {{ isSending ? `${countdown}s` : '发送验证码' }}
                     </Button>
@@ -193,9 +193,10 @@
 
               <Button
                 type="submit"
-                class="mt-6 h-10 w-full bg-gradient-to-r from-sky-600 to-pink-500 text-lg text-white/90 hover:opacity-90"
+                class="mt-6 h-10 w-full cursor-pointer bg-gradient-to-r from-sky-600 to-pink-500 text-lg text-white/90 hover:opacity-90"
+                :disabled="isLoading"
               >
-                {{ typeMap[type] }}
+                {{ isLoading ? '处理中...' : typeMap[type] }}
               </Button>
             </form>
           </div>
@@ -224,6 +225,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import * as z from 'zod'
 
+// 路由和导航
 const route = useRoute()
 const router = useRouter()
 
@@ -234,8 +236,6 @@ const props = defineProps({
     default: 'login',
   },
 })
-// emits
-const emit = defineEmits(['submitFunc'])
 
 // 类型映射
 const typeMap = {
@@ -247,25 +247,30 @@ const typeMap = {
 // 当前类型
 const type = computed(() => props.type)
 
-// 验证码状态
-const captchaSrc = ref('')
-const captchaId = ref('')
-const emailCodeId = ref('')
-
-// 邮箱验证码发送状态
-const isSending = ref(false)
-const countdown = ref(0)
+// 状态管理
+const captchaSrc = ref('') // 图形验证码图片
+const captchaId = ref('') // 图形验证码ID
+const emailCodeId = ref('') // 邮箱验证码ID
+const isSending = ref(false) // 邮箱验证码发送状态
+const countdown = ref(0) // 倒计时
+const isLoading = ref(false) // 表单提交加载状态
 
 // 动态表单校验规则
 const formSchema = computed(() => {
   const baseSchema = z.object({
-    username: z.string().min(2).max(50),
-    captcha: z.string().length(4),
+    username: z
+      .string()
+      .min(2, '用户名必须为2-50位')
+      .max(50, '用户名必须为2-50位'),
+    captcha: z.string().length(4, '验证码必须为4位'),
   })
 
   if (type.value === 'login') {
     return baseSchema.extend({
-      password: z.string().min(6).max(50),
+      password: z
+        .string()
+        .min(6, '密码必须为6-50位')
+        .max(50, '密码必须为6-50位'),
     })
   }
 
@@ -273,7 +278,10 @@ const formSchema = computed(() => {
     return baseSchema.extend({
       email: z.string().email('无效的邮箱格式'),
       emailCode: z.string().length(6, '邮箱验证码必须为6位'),
-      password: z.string().min(6).max(50),
+      password: z
+        .string()
+        .min(6, '密码必须为6-50位')
+        .max(50, '密码必须为6-50位'),
     })
   }
 
@@ -282,7 +290,10 @@ const formSchema = computed(() => {
       .extend({
         email: z.string().email('无效的邮箱格式'),
         emailCode: z.string().length(6, '邮箱验证码必须为6位'),
-        newPwd: z.string().min(6).max(50),
+        newPwd: z
+          .string()
+          .min(6, '密码必须为6-50位')
+          .max(50, '密码必须为6-50位'),
         confirmPwd: z.string(),
       })
       .refine((data) => data.newPwd === data.confirmPwd, {
@@ -298,16 +309,14 @@ const { handleSubmit, resetForm } = useForm({
   validationSchema: toTypedSchema(formSchema.value),
 })
 
-// 加载验证码
+// 加载图形验证码
 const loadCaptcha = async () => {
   try {
-    const response = await axios.get('/captcha', {
-      responseType: 'blob',
-    })
+    const response = await axios.get('/captcha', { responseType: 'blob' })
     captchaSrc.value = URL.createObjectURL(response.data)
     captchaId.value = response.headers['captchaid']
   } catch (error) {
-    toast.error('验证码加载失败')
+    toast.error('验证码加载失败，请稍后重试')
   }
 }
 
@@ -323,19 +332,18 @@ const sendEmailCaptcha = async () => {
     isSending.value = true
     countdown.value = 60
     const interval = setInterval(() => {
+      countdown.value--
       if (countdown.value <= 0) {
         clearInterval(interval)
         isSending.value = false
-        return
       }
-      countdown.value--
     }, 1000)
 
     const response = await axios.post('/email/sendMailCaptcha', { email })
     emailCodeId.value = response.data.data.uuid
     toast.success('验证码已发送，十分钟内有效')
   } catch (error) {
-    toast.error('验证码发送失败')
+    toast.error('验证码发送失败，请稍后重试')
     isSending.value = false
     countdown.value = 0
   }
@@ -343,6 +351,7 @@ const sendEmailCaptcha = async () => {
 
 // 表单提交
 const onSubmit = handleSubmit(async (values) => {
+  isLoading.value = true
   try {
     const payload = {
       ...values,
@@ -350,33 +359,34 @@ const onSubmit = handleSubmit(async (values) => {
       emailCodeId: emailCodeId.value,
     }
 
-    // 根据类型调用不同接口
-    let url = '/auth/login'
-    if (type.value === 'register') url = '/auth/register'
-    if (type.value === 'recover') url = '/auth/recoverpwd'
+    const urlMap = {
+      login: '/auth/login',
+      register: '/auth/register',
+      recover: '/auth/recoverpwd',
+    }
+    const url = urlMap[type.value]
 
     const { data } = await axios.post(url, payload)
     if (data.code === 0) {
       toast.success(`${typeMap[type.value]}成功`)
-      // 如果类型是login, 将token写入localStorage
       if (type.value === 'login') {
         localStorage.setItem('token', data.data.token)
       }
-      // 延迟
       await new Promise((resolve) => setTimeout(resolve, 1500))
+      router.push(type.value === 'register' ? '/auth/login' : '/user/center')
     } else {
-      toast.error(data.msg)
+      toast.error(data.msg || '操作失败')
       loadCaptcha()
-      return
     }
-    router.push(type.value === 'register' ? '/auth/login' : '/')
   } catch (error) {
-    toast.error(error.response?.data?.msg || '操作失败')
+    toast.error(error.response?.data?.msg || '操作失败，请稍后重试')
     loadCaptcha()
+  } finally {
+    isLoading.value = false
   }
 })
 
-// 监听路由变化重置表单
+// 监听路由变化并初始化
 watch(
   () => route.path,
   () => {

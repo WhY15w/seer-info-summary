@@ -219,6 +219,7 @@ import {
   SaveIcon,
 } from 'lucide-vue-next'
 
+// 状态管理
 const token = ref(localStorage.getItem('token'))
 const userInfo = ref({
   username: '',
@@ -230,6 +231,20 @@ const userInfo = ref({
   lastLogin: '',
   subscriptions: [],
 })
+const loading = ref(true)
+const isSaving = ref(false)
+
+// 订阅选项
+const subscriptionOptions = ref([
+  { id: 'bilibili', label: '官方动态', description: '赛尔号B站图文动态' },
+  { id: 'lxy', label: '雷小伊', description: '雷小伊相关软件更新订阅 (推荐)' },
+  { id: 'cj', label: '重聚系列', description: '重聚相关软件更新订阅 (推荐)' },
+  {
+    id: 'plugin',
+    label: '插件中心',
+    description: '重聚系列DLL插件扩展更新订阅',
+  },
+])
 
 // 表单 schema
 const subscriptionSchema = toTypedSchema(
@@ -246,31 +261,6 @@ const { handleSubmit, setValues } = useForm({
   },
 })
 
-// 新增订阅相关状态
-const isSaving = ref(false)
-const subscriptionOptions = ref([
-  {
-    id: 'bilibili',
-    label: '官方动态',
-    description: '赛尔号B站图文动态',
-  },
-  {
-    id: 'lxy',
-    label: '雷小伊',
-    description: '雷小伊相关软件更新订阅 (推荐)',
-  },
-  {
-    id: 'cj',
-    label: '重聚系列',
-    description: '重聚相关软件更新订阅 (推荐)',
-  },
-  {
-    id: 'plugin',
-    label: '插件中心',
-    description: '重聚系列DLL插件扩展更新订阅',
-  },
-])
-
 // 提交订阅设置
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -283,7 +273,7 @@ const onSubmit = handleSubmit(async (values) => {
       toast.success('订阅设置已保存')
       userInfo.value.subscriptions = data.data.subscriptions
     } else {
-      toast.error(data.msg)
+      toast.error(data.msg || '保存失败')
     }
   } catch (error) {
     toast.error('保存失败，请稍后重试')
@@ -293,11 +283,11 @@ const onSubmit = handleSubmit(async (values) => {
   }
 })
 
-const loading = ref(true)
+// 获取用户信息
 const getUserInfo = async () => {
   try {
     loading.value = true
-    const { data } = await axios.get(`/user/getUserInfo`)
+    const { data } = await axios.get('/user/getUserInfo')
     if (data.code === 0) {
       userInfo.value = {
         subscriptions: data.data.subscriptions || [],
@@ -310,10 +300,10 @@ const getUserInfo = async () => {
         userInfo.value.avatar = basePath + '/img/avatar/defaultavatar.png'
       }
     } else {
-      toast.error(data.msg)
+      toast.error(data.msg || '获取用户信息失败')
     }
   } catch (error) {
-    toast.error('获取用户信息失败')
+    toast.error('获取用户信息失败，请稍后重试')
   } finally {
     loading.value = false
   }
@@ -321,7 +311,6 @@ const getUserInfo = async () => {
 
 // 处理头像加载失败
 const handleAvatarError = (e) => {
-  // 获取基本路径
   const basePath = import.meta.env.BASE_URL
   e.target.src = basePath + '/img/avatar/defaultavatar.png'
 }
@@ -346,9 +335,12 @@ const logOut = async () => {
     toast.success('退出登录成功')
     await new Promise((resolve) => setTimeout(resolve, 1500))
     router.push('/auth/login')
-  } catch (error) {}
+  } catch (error) {
+    toast.error('退出失败，请稍后重试')
+  }
 }
 
+// 生命周期钩子
 onMounted(() => {
   if (!token.value) {
     router.push('/auth/login')
