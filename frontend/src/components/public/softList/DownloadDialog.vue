@@ -48,8 +48,19 @@
           class="cursor-pointer px-3"
           @click="copyHandler(url)"
         >
-          <span class="sr-only">Copy</span>
           <Copy class="h-4 w-4" />
+        </Button>
+      </div>
+      <!-- 直链下载 -->
+      <div class="flex items-center justify-around">
+        <Button
+          type="submit"
+          size="sm"
+          class="cursor-pointer px-3"
+          @click="downloadFile(url, 'cloud')"
+        >
+          <CloudDownload />
+          <span>云端直链下载</span>
         </Button>
       </div>
     </DialogContent>
@@ -57,7 +68,7 @@
 </template>
 
 <script setup>
-import { Copy } from 'lucide-vue-next'
+import { Copy, CloudDownload } from 'lucide-vue-next'
 import {
   Dialog,
   DialogContent,
@@ -69,9 +80,14 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'vue-sonner'
+import axios from '@/utils/axios'
 
 const props = defineProps({
   url: String,
+  psd: {
+    type: String,
+    default: '',
+  },
   name: String,
 })
 
@@ -88,6 +104,24 @@ const copyHandler = (text) => {
     .catch((error) => {
       console.error('复制失败:', error)
     })
+}
+
+const downloadFile = async (url) => {
+  try {
+    const { data } = await axios.get('/lanzou', {
+      params: {
+        url,
+        pwd: props.psd,
+      },
+    })
+    if (data.code !== 0) {
+      toast.error('下载失败，请更换下载方式')
+      return
+    }
+    window.open(data.data.downUrl)
+  } catch (error) {
+    toast.error('下载失败，请更换下载方式')
+  }
 }
 const openHandler = () => emit('open', props.url)
 </script>

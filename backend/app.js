@@ -16,6 +16,7 @@ const emailRouter = require("./routes/email");
 const captchaRouter = require("./routes/captcha");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
+const lanzouRouter = require("./routes/lanzou");
 
 require("./jobs/index"); // 导入定时任务
 
@@ -41,6 +42,7 @@ apiRouter.use("/email", emailRouter);
 apiRouter.use("/captcha", captchaRouter);
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/user", userRouter);
+apiRouter.use("/lanzou", lanzouRouter);
 
 // 统一添加前缀
 app.use(config.prefix, apiRouter);

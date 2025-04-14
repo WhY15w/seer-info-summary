@@ -3,6 +3,7 @@
   <DownloadDialog
     :url="item[config.field]"
     :name="item.name || item.name_all"
+    :psd="item.psd"
     @open="$emit('open', $event)"
   />
 </template>
