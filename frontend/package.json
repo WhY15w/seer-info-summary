@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "deploy": "vite build --mode cf && npx wrangler pages deploy --branch=main --commit-dirty=true",
     "preview": "vite preview",
     "format": "prettier --write src/"
   },
@@ -35,6 +36,7 @@
     "@vitejs/plugin-vue": "^5.2.3",
     "prettier": "3.5.3",
     "vite": "^6.2.6",
-    "vite-plugin-vue-devtools": "^7.7.2"
+    "vite-plugin-vue-devtools": "^7.7.2",
+    "wrangler": "^4.10.0"
   }
 }

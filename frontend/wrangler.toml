@@ -1,0 +1,6 @@
+name = "seer-info-summary"
+compatibility_date = "2025-02-27"
+pages_build_output_dir = './dist/seerinfo'
+
+[env]
+production = { }

@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
-  history: createWebHistory(
-    process.env.NODE_ENV === 'production' ? '/seerinfo/' : '/',
-  ),
+  history: createWebHistory(import.meta.env.VITE_APP_SUB_PATH),
   routes: [
     {
       path: '/',
