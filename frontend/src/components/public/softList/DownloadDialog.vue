@@ -26,12 +26,19 @@
         <DialogTitle>文件下载</DialogTitle>
         <DialogDescription>
           复制下方链接或点击右侧下载
-          <span
+          <Button
             @click="openHandler"
-            class="cursor-pointer rounded-2xl bg-sky-500 px-3 py-1 font-bold text-sky-50"
+            class="h-6 cursor-pointer rounded-2xl bg-sky-500 px-3 py-1 font-bold text-sky-50"
           >
-            {{ name || '链接🔗' }}
-          </span>
+            <span>{{ name || '链接🔗' }}</span>
+            <span
+              v-if="psd"
+              class="flex items-center gap-1"
+            >
+              <LockIcon></LockIcon>
+              <span>{{ psd }}</span>
+            </span>
+          </Button>
         </DialogDescription>
       </DialogHeader>
       <div class="flex items-center space-x-2">
@@ -56,7 +63,7 @@
         <Button
           type="submit"
           size="sm"
-          class="cursor-pointer px-3"
+          class="flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3 text-white shadow-lg transition-all hover:scale-105 hover:cursor-pointer"
           @click="downloadFile(url, 'cloud')"
         >
           <CloudDownload />
@@ -68,7 +75,7 @@
 </template>
 
 <script setup>
-import { Copy, CloudDownload } from 'lucide-vue-next'
+import { Copy, CloudDownload, LockIcon } from 'lucide-vue-next'
 import {
   Dialog,
   DialogContent,
