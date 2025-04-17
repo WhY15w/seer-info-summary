@@ -11,12 +11,54 @@
       content="width=device-width, initial-scale=1.0"
     />
     <title>赛尔号相关信息聚合页</title>
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="赛尔号信息汇总页面，提供赛尔号登录器下载链接、重聚插件中心入口、B站官方动态等资讯内容整合展示。"
+    />
+    <meta
+      name="keywords"
+      content="赛尔号, 登录器下载, 重聚插件, B站动态, 赛尔号资讯, 赛尔号插件, 精灵, 宇宙探险"
+    />
+    <meta
+      name="author"
+      content="HurryWang聿聿"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta
+      property="og:title"
+      content="赛尔号相关信息聚合页"
+    />
+    <meta
+      property="og:description"
+      content="整合展示赛尔号登录器下载、重聚插件中心、B站官方动态等一站式信息。"
+    />
+    <meta
+      property="og:type"
+      content="website"
+    />
+    <meta
+      property="og:url"
+      content="<%= ogUrl %>"
+    />
+    <meta
+      property="og:image"
+      content="<%= ogImage %>"
+    />
   </head>
+
   <body>
     <div id="app"></div>
     <script
       type="module"
       src="/src/main.js"
+    ></script>
+    <script
+      defer
+      src="<%= trackerSrc %>"
+      data-website-id="<%= trackerId %>"
     ></script>
   </body>
 </html>

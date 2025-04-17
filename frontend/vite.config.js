@@ -4,6 +4,7 @@ import { defineConfig, loadEnv } from 'vite'
 import viteCompression from 'vite-plugin-compression'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -18,6 +19,17 @@ export default defineConfig(({ mode }) => {
         verbose: true, // 是否在控制台中输出压缩结果
         ext: '.gz',
         deleteOriginFile: false, // 源文件压缩后是否删除
+      }),
+      // 添加html插件
+      createHtmlPlugin({
+        inject: {
+          data: {
+            trackerSrc: env.VITE_APP_TRACKER_SRC,
+            trackerId: env.VITE_APP_TRACKER_ID,
+            ogUrl: env.VITE_APP_OG_URL,
+            ogImage: env.VITE_APP_OG_IMAGE,
+          },
+        },
       }),
     ],
     server: {

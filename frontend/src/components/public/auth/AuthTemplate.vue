@@ -372,7 +372,8 @@ const onSubmit = handleSubmit(async (values) => {
       if (type.value === 'login') {
         localStorage.setItem('token', data.data.token)
       }
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      // 跳转到用户中心页面, 等待500毫秒再跳转
+      await new Promise((resolve) => setTimeout(resolve, 500))
       router.push(type.value === 'register' ? '/auth/login' : '/user/center')
     } else {
       toast.error(data.msg || '操作失败')
