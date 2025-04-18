@@ -53,9 +53,9 @@
 
             <!-- 内容 -->
             <div class="relative z-10 text-center">
-              <h3 class="mb-2 text-2xl font-semibold text-white">
+              <div class="mb-2 text-2xl font-semibold text-white">
                 {{ item.title }}
-              </h3>
+              </div>
               <p class="text-sm text-indigo-200 opacity-80">
                 {{ item.desc }}
               </p>
