@@ -8,11 +8,21 @@
           <div
             class="rounded-lg bg-white/80 px-6 py-8 shadow-2xl ring-1 ring-black/5 backdrop-blur-sm dark:bg-gray-800/95 dark:ring-white/10"
           >
-            <h1
-              class="animate-gradient mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-center text-3xl font-bold tracking-tight text-transparent sm:text-4xl"
-            >
-              欢迎{{ typeMap[type] }}
-            </h1>
+            <div class="mb-6 flex items-center justify-between">
+              <div class="h-8 w-8"></div>
+              <h1
+                class="animate-gradient bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-center text-3xl font-bold tracking-tight text-transparent sm:text-4xl"
+              >
+                欢迎{{ typeMap[type] }}
+              </h1>
+              <Button
+                @click="router.push('/')"
+                class="cursor-pointer bg-gradient-to-r from-blue-500 to-purple-500"
+              >
+                <ArrowLeft></ArrowLeft>
+                返回
+              </Button>
+            </div>
 
             <form
               @submit="onSubmit"
@@ -224,6 +234,7 @@ import { toast } from 'vue-sonner'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import * as z from 'zod'
+import { ArrowLeft, UserCheck2Icon } from 'lucide-vue-next'
 
 // 路由和导航
 const route = useRoute()
