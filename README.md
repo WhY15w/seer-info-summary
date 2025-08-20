@@ -40,24 +40,6 @@
 | 镜像2 | https://seerinfo.cn |
 | 镜像3 | https://seer.hurry.wang |
 
-## 📸 功能截图
-
-### 主界面
-
-![主页界面展示](C:\Users\16524\Downloads\img\zhuye.png)
-
-### 功能页面
-
-![插件中心页面](C:\Users\16524\Downloads\img\plugin.png)
-
-### 用户中心
-
-![用户登录页面](C:\Users\16524\Downloads\img\login.png)
-
-![用户注册页面](C:\Users\16524\Downloads\img\register.png)
-
-![用户中心页面](C:\Users\16524\Downloads\img\usercenter.png)
-
 ## 🛠️ 技术架构
 
 ### 前端技术栈
@@ -109,6 +91,24 @@ seer-info-summary/
 ├── img/                # 项目截图
 └── README.md
 ```
+
+## 📸 功能截图
+
+### 主界面
+
+![主页界面展示](img/zhuye.png)
+
+### 功能页面
+
+![插件中心页面](img/plugin.png)
+
+### 用户中心
+
+![用户登录页面](img/login.png)
+
+![用户注册页面](img/register.png)
+
+![用户中心页面](img/usercenter.png)
 
 ## 🚀 快速开始
 
