@@ -6,22 +6,22 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
-    "axios": "^1.8.4",
+    "axios": "^1.15.0",
     "cookie-parser": "~1.4.7",
-    "cors": "^2.8.5",
-    "debug": "~4.4.0",
-    "dotenv": "^16.5.0",
+    "cors": "^2.8.6",
+    "debug": "~4.4.3",
+    "dotenv": "^16.6.1",
     "ejs": "~3.1.10",
     "express": "~5.1.0",
-    "http-errors": "~2.0.0",
+    "http-errors": "~2.0.1",
     "jsdom": "^26.1.0",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "md5": "^2.3.0",
-    "mongoose": "^8.13.2",
-    "morgan": "~1.10.0",
+    "mongoose": "^8.23.0",
+    "morgan": "~1.10.1",
     "node-schedule": "^2.1.1",
-    "nodemailer": "^6.10.0",
-    "qs": "^6.14.0",
+    "nodemailer": "^6.10.1",
+    "qs": "^6.15.1",
     "svg-captcha": "^1.4.0"
   }
 }
